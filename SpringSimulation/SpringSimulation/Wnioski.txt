@@ -8,7 +8,7 @@ większy współczynnik sprężystości (c) - większa prędkość i przyspiesze
 mniejsza delta - mniejsze błędy
 
 Zadanie 2
-Tłumienie krytyczne dla k = 1.73
+Tłumienie krytyczne dla k = 2
 
 Zadanie 3
 Minimalny czas do osiągnięcia równowagi dla k = 1.73 - tłumienie krytyczne;
@@ -21,7 +21,7 @@ przez funkcję w(t).
 Najlepsze wyniki dla k = 1.73
 
 Zadanie 5
-omega_r = 0.5;
+omega_r = 1;
 
 Zadanie 6
 w(t) = 1/2

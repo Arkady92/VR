@@ -237,7 +237,8 @@ namespace SpringSimulation
                 prePositon = position;
                 //position = x0 + delta * velocity + acceleration * delta * delta / 2;
                 double delta_2 = delta * delta;
-                position = delta_2 * (c * (w - position) - k * v0 + h) / m + 2 * position - prePositon;
+                //position = delta_2 * (c * (w - position) - k * v0 + h) / m + 2 * position - prePositon;
+                position = delta_2 / (2 * m) * (c * (w - position) - k * v0 + h)  + delta * velocity - position;
                 velocity = (position - prePositon) / delta;               
                 acceleration = (c * (w - position) - k * velocity + h) / m;
                 secondIteration = false;
