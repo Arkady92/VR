@@ -1,0 +1,52 @@
+﻿<Window x:Class="JelloSimulation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JelloSimulation"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        mc:Ignorable="d"
+        Title="Jello Simulation" Height="650" Width="1000" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column ="0">
+            <Border BorderBrush="Black" BorderThickness="2"></Border>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                    <Button Name="PlayButton" Margin="5" Content="Play" Width="50" Height="50" Click="PlayButton_Click"></Button>
+                    <Button Name="PauseButton" Margin="5" Content="Pause" Width="50" Height="50" Click="PauseButton_Click"></Button>
+                    <Button Name="ResetButton" Margin="5" Content="Reset" Width="50" Height="50" Click="ResetButton_Click"></Button>
+                </StackPanel>
+                <Label Content="Parameters"></Label>
+                <Label Content="Mass [M]"></Label>
+                <TextBox Name="MassTextBox" Text="{Binding Path=Mass, Mode=TwoWay}" Margin="20,0,20,0" Width="50" HorizontalAlignment="Left"></TextBox>
+                <Label Content="Elasticity [C1]"></Label>
+                <TextBox Name="ElasticityC1TextBox" Text="{Binding Path=ElasticityC1}" Margin="20,0,20,0" Width="50" HorizontalAlignment="Left"></TextBox>
+                <Label Content="Elasticity [C2]"></Label>
+                <TextBox Name="ElasticityC2TextBox" Text="{Binding Path=ElasticityC1}" Margin="20,0,20,0" Width="50" HorizontalAlignment="Left"></TextBox>
+                <Label Content="Viscosity [K]"></Label>
+                <TextBox Name="ViscosityTextBox" Text="{Binding Path=Viscosity}" Margin="20,0,20,0" Width="50" HorizontalAlignment="Left"></TextBox>
+                <Label Content="Delta [D]"></Label>
+                <TextBox Name="DeltaTextBox" Text="{Binding Path=Delta, Mode=TwoWay}" Margin="20,0,20,10" Width="50" HorizontalAlignment="Left"></TextBox>
+                <Label Content="Maximum Initial Deviation"></Label>
+                <TextBox Name="MaximumInitialDeviationTextBox" Text="{Binding Path=X0Max}" Margin="20,0,20,0" Width="50" HorizontalAlignment="Left"></TextBox>
+                <Label Content="Maximum Initial Velocity"></Label>
+                <TextBox Name="MaximumInitialVelocityTextBox" Text="{Binding Path=V0Max}" Margin="20,0,20,20" Width="50" HorizontalAlignment="Left"></TextBox>
+                <Label Content="Display"></Label>
+                <CheckBox Name="ControlPointsCheckBox" Content="Control Points" Margin="20,0,20,5" IsChecked="{Binding Path=ControlPointsEnabled}"></CheckBox>
+                <CheckBox Name="SteeringFrameCheckBox" Content="Steering Frame" Margin="20,0,20,5" IsChecked="{Binding Path=SteeringFrameEnabled}"></CheckBox>
+                <CheckBox Name="LimitationsCuboidCheckBox" Content="Limitations Cuboid" Margin="20,0,20,5" IsChecked="{Binding Path=LimitationsCuboidEnabled}"></CheckBox>
+                <CheckBox Name="BezierCubeCheckBox" Content="Bezier Cube" Margin="20,0,20,5" IsChecked="{Binding Path=BezierCubeEnabled}"></CheckBox>
+                <CheckBox Name="DeformedSolidCheckBox" Content="Deformed Solid" Margin="20,0,20,5" IsChecked="{Binding Path=DeformedSolidEnabled}"></CheckBox>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column ="1">
+            <h:HelixViewport3D Name="HelixViewport" Grid.Column="1" ShowFrameRate="True" ShowCoordinateSystem="True" BorderBrush="Black" BorderThickness="2" Camera="{h:PerspectiveCamera 0,50,0}">
+                <h:DefaultLights/>
+            </h:HelixViewport3D>
+        </Grid>
+    </Grid>
+</Window>
