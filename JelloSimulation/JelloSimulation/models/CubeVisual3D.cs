@@ -27,6 +27,7 @@ namespace JelloSimulation.Models
         public ISpring spring { get; set; }
         public ISpring springFrame { get; set; }
         public ICollisionChecker CollisionChecker { get; set; }
+        public bool IsDampingActive { get; set; }
 
         public double X0Max { get; set; }
 
@@ -36,7 +37,8 @@ namespace JelloSimulation.Models
         {
             base.N = 4;
             base.Initialize();
-            radius = cubeSize/(double)(N - 1);
+            IsDampingActive = true;
+            radius = cubeSize / (double)(N - 1);
             rand = new Random();
             spring = new Spring();
             springFrame = new Spring();
@@ -68,7 +70,7 @@ namespace JelloSimulation.Models
             CalculateSpherePoints();
             points.Points = GetControlPoints();
             lines.Points = GetControlLines();
-            lines.Color = Color.FromArgb(255,0, 0, 255);
+            lines.Color = Color.FromArgb(255, 0, 0, 255);
         }
 
         private void CalculateSpherePoints()
@@ -188,14 +190,15 @@ namespace JelloSimulation.Models
                         P1 = X[3 * i, 3 * j, 3 * k];
                         Point3D p = framePoints[i, j, k];
                         P2 = new Vector3D(p.X, p.Y, p.Z);
-                        CollisionChecker.TrimPoint(ref P2);
+                        if (IsDampingActive)
+                            CollisionChecker.TrimPoint(ref P2);
                         Vector3D V1 = V0[3 * i, 3 * j, 3 * k];
                         Vector3D I0 = new Vector3D(0, 0, 0); //długość spoczynkowa sprężynki połączonej z ramką ma być 0
                         Vector3D diff = P1 - P2;
-                        if (Math.Sqrt(diff.X*diff.X + diff.Y*diff.Y + diff.Z*diff.Z) < 0.00001)
-                            jointForces[i, j, k] = new  Vector3D(0, 0, 0);
+                        if (Math.Sqrt(diff.X * diff.X + diff.Y * diff.Y + diff.Z * diff.Z) < 0.00001)
+                            jointForces[i, j, k] = new Vector3D(0, 0, 0);
                         else
-                            jointForces[i,j,k] = springFrame.GetCurrentForce(P1, P2, I0, V1);
+                            jointForces[i, j, k] = springFrame.GetCurrentForce(P1, P2, I0, V1);
                     }
                 }
             }
@@ -269,8 +272,13 @@ namespace JelloSimulation.Models
                         Vector3D xn = spring.GetSecondPosition(x, v);
                         bool isCollisionDetected = CollisionChecker.CheckCollision(xn, ref v);
 
-                        if (isCollisionDetected)
-                            V0[i, j, k] = new Vector3D(0, 0, 0);
+                        if (IsDampingActive)
+                        {
+                            if (isCollisionDetected)
+                                V0[i, j, k] = new Vector3D(0, 0, 0);
+                            else
+                                V0[i, j, k] = v;
+                        }
                         else
                             V0[i, j, k] = v;
                         xn = spring.GetSecondPosition(x, V0[i, j, k]);

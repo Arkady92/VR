@@ -209,6 +209,20 @@ namespace JelloSimulation
             }
         }
 
+        private bool damping;
+        public bool Damping
+        {
+            get { return damping; }
+            set
+            {
+                if (value != damping)
+                {
+                    damping = value;
+                    OnPropertyChanged("Damping");
+                }
+            }
+        }
+
         System.Windows.Threading.DispatcherTimer dispatcherTimer;
 
         private const double Epsilon = 0.0001;
@@ -240,10 +254,12 @@ namespace JelloSimulation
         {
             limitationsCuboid = new RoomVisual3D();
             limitationsCuboid.Initialize(20.0);
+            limitationsCuboid.IsDampingActive = Damping;
 
             bezierCube = new BezierCubeVisual3D();
             bezierCube.Initialize(cubeSize);
             bezierCube.CollisionChecker = limitationsCuboid;
+            bezierCube.IsDampingActive = Damping;
 
             spherePoints = new PointsVisual3D();
             spherePoints.Points = bezierCube.GetSpherePoints();
@@ -267,8 +283,8 @@ namespace JelloSimulation
                 HelixViewport.Children.Add(steeringFrame.GetJointsPoints(bezierCube.GetCornerPoints()));
             }
             manipulator = new CombinedManipulator();
-            manipulator.Offset = new Vector3D(0, 0, 5);
             manipulator.Diameter = 3;
+            manipulator.Offset = new Vector3D(0, 0, 5);
             HelixViewport.Children.Add(manipulator);
 
             //geometry = new MeshGeometryVisual3D();
@@ -308,6 +324,7 @@ namespace JelloSimulation
             LimitationsCuboidEnabled = true;
             BezierCubeEnabled = true;
             DeformedSolidEnabled = false;
+            Damping = true;
 
             dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
@@ -374,7 +391,10 @@ namespace JelloSimulation
                 HelixViewport.Children.Add(limitationsCuboid.lines);
             }
             if (DeformedSolidEnabled)
+            {
                 HelixViewport.Children.Add(spherePoints);
+                HelixViewport.Children.Remove(frameLines);
+            }
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -418,11 +438,13 @@ namespace JelloSimulation
             bezierCube.spring.Delta = Delta;
             bezierCube.X0Max = X0Max;
             bezierCube.V0Max = V0Max;
+            bezierCube.IsDampingActive = Damping;
 
             bezierCube.springFrame.Mass = Mass;
             bezierCube.springFrame.Springer = ElasticityC2;
             bezierCube.springFrame.Viscosity = Viscosity;
             bezierCube.springFrame.Delta = Delta;
+            limitationsCuboid.IsDampingActive = Damping;
         }
 
         #endregion

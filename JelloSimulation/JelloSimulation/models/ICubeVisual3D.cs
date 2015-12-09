@@ -31,5 +31,7 @@ namespace JelloSimulation.Models
 
         IList<Point3D> GetFaceControlPoints(int faceNumber);
         IList<Point3D> GetSpherePoints();
+
+        bool IsDampingActive { get; set; }
     }
 }

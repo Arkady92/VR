@@ -54,7 +54,7 @@ namespace JelloSimulation.Models
             double d;
 
             if (IsDampingActive)
-                d = 0.1;
+                d = 0.9;
             else
             {
                 d = 1;

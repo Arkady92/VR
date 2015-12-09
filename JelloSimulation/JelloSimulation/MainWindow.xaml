@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:JelloSimulation"
         xmlns:h="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
-        Title="Jello Simulation" Height="650" Width="1000" WindowStartupLocation="CenterScreen">
+        Title="Jello Simulation" Height="665" Width="1000" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -35,6 +35,7 @@
                 <TextBox Name="MaximumInitialDeviationTextBox" Text="{Binding Path=X0Max}" Margin="20,0,20,0" Width="50" HorizontalAlignment="Left"></TextBox>
                 <Label Content="Maximum Initial Velocity"></Label>
                 <TextBox Name="MaximumInitialVelocityTextBox" Text="{Binding Path=V0Max}" Margin="20,0,20,20" Width="50" HorizontalAlignment="Left"></TextBox>
+                <CheckBox Name="DampingCheckBox" Content="Non-elastic Collisions" Margin="20,0,20,5" IsChecked="{Binding Path=Damping}"></CheckBox>
                 <Label Content="Display"></Label>
                 <CheckBox Name="ControlPointsCheckBox" Content="Control Points" Margin="20,0,20,5" IsChecked="{Binding Path=ControlPointsEnabled}"></CheckBox>
                 <CheckBox Name="SteeringFrameCheckBox" Content="Steering Frame" Margin="20,0,20,5" IsChecked="{Binding Path=SteeringFrameEnabled}"></CheckBox>
