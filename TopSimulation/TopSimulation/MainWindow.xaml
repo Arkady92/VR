@@ -1,0 +1,94 @@
+﻿<Window x:Class="TopSimulation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TopSimulation"
+        xmlns:h="http://helix-toolkit.org/wpf"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        mc:Ignorable="d"
+        Title="Spinning Top Simulation" Height="750" Width="970" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column ="0">
+            <Border BorderBrush="Black" BorderThickness="2"></Border>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                    <Button Name="PlayButton" Margin="5" Content="Play" Width="50" Height="50" Click="PlayButton_Click"></Button>
+                    <Button Name="PauseButton" Margin="5" Content="Pause" Width="50" Height="50" Click="PauseButton_Click"></Button>
+                    <Button Name="ResetButton" Margin="5" Content="Reset" Width="50" Height="50" Click="ResetButton_Click"></Button>
+                </StackPanel>
+                <Label Content="Parameters"></Label>
+                <Label Content="Time Delta"></Label>
+                <TextBox Text="{Binding Path=TimeDelta, Mode=TwoWay}" Margin="20,0,20,0" Width="50" HorizontalAlignment="Left"></TextBox>
+                <Label Content="Cube Size"></Label>
+                <TextBox Text="{Binding Path=CubeSize, Mode=TwoWay}" Margin="20,0,20,0" Width="50" HorizontalAlignment="Left"></TextBox>
+                <Label Content="Cube Density"></Label>
+                <TextBox Text="{Binding Path=CubeDensity, Mode=TwoWay}" Margin="20,0,20,0" Width="50" HorizontalAlignment="Left"></TextBox>
+                <!--<Label Content="Angle"></Label>
+                <TextBox Name="AngleTextBox" Text="{Binding Path=Angle, Mode=TwoWay}" Margin="20,0,20,0" Width="50" HorizontalAlignment="Left"></TextBox>
+                <Label Content="Angle Velocity"></Label>
+                <TextBox Name="AngleVelocityTextBox" Text="{Binding Path=AngleVelocity, Mode=TwoWay}" Margin="20,0,20,0" Width="50" HorizontalAlignment="Left"></TextBox>-->
+                <StackPanel>
+                    <Label Content="QUATERNION" HorizontalAlignment="Center"></Label>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="X" ></Label>
+                        <TextBox Text="{Binding Path=CurrentQuaternionX}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Y" ></Label>
+                        <TextBox Text="{Binding Path=CurrentQuaternionY}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Z" ></Label>
+                        <TextBox Text="{Binding Path=CurrentQuaternionZ}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="W" ></Label>
+                        <TextBox Text="{Binding Path=CurrentQuaternionW}" Width="50" Margin="5,0,0,0" HorizontalAlignment="Left"></TextBox>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel>
+                    <Label Content="ANGLE VELOCITY" HorizontalAlignment="Center" ></Label>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="X" ></Label>
+                        <TextBox Text="{Binding Path=CurrentAngleVelocityX}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Y" ></Label>
+                        <TextBox Text="{Binding Path=CurrentAngleVelocityY}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Z" ></Label>
+                        <TextBox Text="{Binding Path=CurrentAngleVelocityZ}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
+                    </StackPanel>
+                </StackPanel>
+                <Label Content="Trajectory Length"></Label>
+                <TextBox Name="TrajectoryLengthTextBox" Text="{Binding Path=TrajectoryLength}" Margin="20,0,20,10" Width="50" HorizontalAlignment="Left"></TextBox>
+                <CheckBox Name="GravityCheckBox" Content="Gravity" Margin="5,0,20,5" IsChecked="{Binding Path=GravityEnabled}"></CheckBox>
+
+                <Label Content="Display"></Label>
+                <CheckBox Name="CubeCheckBox" Content="Cube" Margin="20,0,20,5" IsChecked="{Binding Path=CubeEnabled}"></CheckBox>
+                <CheckBox Name="DiagonalCheckBox" Content="Diagonal" Margin="20,0,20,5" IsChecked="{Binding Path=DiagonalEnabled}"></CheckBox>
+                <CheckBox Name="TrajectoryCheckBox" Content="Trajectory" Margin="20,0,20,5" IsChecked="{Binding Path=TrajectoryEnabled}"></CheckBox>
+                <CheckBox Name="GravityDirectionCheckBox" Content="Gravity Direction" Margin="20,0,20,5" IsChecked="{Binding Path=GravityDirectionEnabled}"></CheckBox>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column ="1">
+            <h:HelixViewport3D Name="HelixViewport" ShowFrameRate="True" BorderBrush="Black" BorderThickness="2" Camera="{h:PerspectiveCamera 12,-12, 6}">
+                <h:SunLight/>
+                <h:LinesVisual3D x:Name="TrajectoryChain" Points="{Binding Path=TrajectoryPoints}" Thickness="2" Color="Blue">
+                </h:LinesVisual3D>
+                <h:CubeVisual3D x:Name="FrameStartCube" Visible="True"/>
+                <h:CombinedManipulator x:Name="FrameStartManipulator" TargetTransform="{Binding Transform, ElementName=FrameStartCube}"/>
+            </h:HelixViewport3D>
+            <Button x:Name="ApplyChanges" Content="Apply Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Height="30" Click="ApplyChanges_Click"/>
+
+            <!--<Button x:Name="LoadFrameButton" Content="Apply Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="100" Height="30" Click="LoadFrameButton_Click"/>
+            <Button x:Name="ResetFrameButton" Content="Reset Changes" Grid.Column="1" HorizontalAlignment="Left" Margin="120,0,0,10" VerticalAlignment="Bottom" Width="100" Height="30" Click="ResetFrameButton_Click"/>-->
+        </Grid>
+    </Grid>
+</Window>
